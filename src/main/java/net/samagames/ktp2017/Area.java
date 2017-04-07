@@ -7,20 +7,24 @@ import org.bukkit.Location;
 import java.util.TreeSet;
 import java.util.UUID;
 
-public class Area<T> {
+public class Area {
 
-    private T identity;
+    private int areaId;
     private Location areaLocation;
     private TreeSet<UUID> inArea;
 
-    public Area(T identity){
+    public Area(int id){
 
-        this.identity = identity;
+        this.areaId = id;
         this.inArea = new TreeSet<UUID>();
         JsonObject configuration = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs();
 
-        this.areaLocation = LocationUtils.str2loc(configuration.get("world-name").getAsString() + ", " + configuration.get("area_" + identity).getAsString());
+        this.areaLocation = LocationUtils.str2loc(configuration.get("world-name").getAsString() + ", " + configuration.get("area_" + this.areaId).getAsString());
 
+    }
+
+    public int getAreaId(){
+        return this.areaId;
     }
 
     public Location getAreaLocation(){
