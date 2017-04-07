@@ -1,5 +1,9 @@
 # Project files
 .idea
 *.iml
+.classpath
+.project
 # Maven
 target
+.settings/
+src/test/
