@@ -9,10 +9,13 @@ public class KTP2017 extends Game<KTP2017Player> {
      * @author Vialonyx
      */
 
+    private KTP2017Main instance = null;
     private GamePhase current;
 
-    public KTP2017(String gameCodeName, String gameName, String gameDescription, Class<KTP2017Player> gamePlayer) {
+    public KTP2017(KTP2017Main instance, String gameCodeName, String gameName, String gameDescription, Class<KTP2017Player> gamePlayer) {
         super(gameCodeName, gameName, gameDescription, gamePlayer);
+
+        this.instance = instance;
 
         // Setting current phase to WAIT
         this.current = GamePhase.WAIT;
@@ -23,6 +26,10 @@ public class KTP2017 extends Game<KTP2017Player> {
 
         WAIT, AREA_STARTED, GAME_PHASE1, GAME_PHASE2, GAME_DONE;
 
+    }
+
+    public KTP2017Main getInstance(){
+        return this.instance;
     }
 
     public GamePhase getCurrentGamePhase(){
