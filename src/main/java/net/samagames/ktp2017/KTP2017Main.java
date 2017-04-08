@@ -18,7 +18,7 @@ public class KTP2017Main extends JavaPlugin {
     public void onEnable(){
 
         // Registering game on SamaGamesAPI
-        this.game = new KTP2017("code", "KTP2017", "description", KTP2017Player.class);
+        this.game = new KTP2017(this, "code", "KTP2017", "description", KTP2017Player.class);
         SamaGamesAPI.get().getGameManager().setFreeMode(true);
         SamaGamesAPI.get().getGameManager().registerGame(this.game);
 
