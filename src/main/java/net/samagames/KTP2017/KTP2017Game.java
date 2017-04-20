@@ -1,18 +1,18 @@
-package net.samagames.ktp2017;
+package net.samagames.KTP2017;
 
 import net.samagames.api.games.Game;
 
-public class KTP2017 extends Game<KTP2017Player> {
+public class KTP2017Game extends Game<KTPPlayer> {
 
     /**
      * There is the internal representation of the Game.
      * @author Vialonyx
      */
 
-    private KTP2017Main instance = null;
+    private KTPMain instance = null;
     private GamePhase current;
 
-    public KTP2017(KTP2017Main instance, String gameCodeName, String gameName, String gameDescription, Class<KTP2017Player> gamePlayer) {
+    public KTP2017Game(KTPMain instance, String gameCodeName, String gameName, String gameDescription, Class<KTPPlayer> gamePlayer) {
         super(gameCodeName, gameName, gameDescription, gamePlayer);
 
         this.instance = instance;
@@ -28,7 +28,7 @@ public class KTP2017 extends Game<KTP2017Player> {
 
     }
 
-    public KTP2017Main getInstance(){
+    public KTPMain getInstance(){
         return this.instance;
     }
 

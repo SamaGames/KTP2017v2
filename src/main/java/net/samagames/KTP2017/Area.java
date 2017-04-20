@@ -1,4 +1,4 @@
-package net.samagames.ktp2017;
+package net.samagames.KTP2017;
 
 import com.google.gson.JsonObject;
 import net.samagames.api.SamaGamesAPI;

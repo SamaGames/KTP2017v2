@@ -1,16 +1,16 @@
-package net.samagames.ktp2017;
+package net.samagames.KTP2017;
 
 import net.samagames.api.games.GamePlayer;
 import org.bukkit.entity.Player;
 
-public class KTP2017Player extends GamePlayer {
+public class KTPPlayer extends GamePlayer {
 
     /**
      * There is the internal representation of the Player.
      * @author Vialonyx
      */
 
-    public KTP2017Player(Player player){
+    public KTPPlayer(Player player){
         super(player);
     }
 

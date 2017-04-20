@@ -1,24 +1,26 @@
-package net.samagames.ktp2017;
+package net.samagames.KTP2017;
 
 import net.samagames.api.SamaGamesAPI;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import static org.bukkit.Bukkit.getWorlds;
 
-public class KTP2017Main extends JavaPlugin {
+public class KTPMain extends JavaPlugin {
 
     /**
-     *  This is the entry point of the KTP2017 Game.
+     *  This is the entry point of the KTP2017Game Game.
      *  @author Vialonyx
      */
 
-    private KTP2017 game;
+    private static KTPMain instance;
+    private KTP2017Game game;
 
     @Override
     public void onEnable(){
 
+        instance = this;
+
         // Registering game on SamaGamesAPI
-        this.game = new KTP2017(this, "code", "KTP2017", "description", KTP2017Player.class);
+        this.game = new KTP2017Game(this, "code", "KTP2017Game", "description", KTPPlayer.class);
         SamaGamesAPI.get().getGameManager().setFreeMode(true);
         SamaGamesAPI.get().getGameManager().registerGame(this.game);
 
@@ -28,7 +30,11 @@ public class KTP2017Main extends JavaPlugin {
 
     }
 
-    public KTP2017 getGame(){
+    public static KTPMain getInstance(){
+        return instance;
+    }
+
+    public KTP2017Game getGame(){
         return this.game;
     }
 
