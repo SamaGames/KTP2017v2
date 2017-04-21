@@ -43,17 +43,11 @@ public class KTP2017Game extends Game<KTPPlayer> {
         // Setting current phase to WAIT
         this.current = GamePhase.WAIT;
 
-        // Set the current playable Area
-        this.currentlyPlayedArea = KTP2017Game.area1;
+        // Setting-up default Area
+        this.setupArea(area1);
 
         // Set the next playable Area (Generated automatically and randomly in the future!)
         this.nextPlayableArea = KTP2017Game.area2;
-
-        // Setting-up WorldBorder
-        this.worldBorder.setSize(32);
-        this.worldBorder.setCenter(this.getCurrentlyPlayedArea().getAreaLocation());
-        this.worldBorder.setWarningDistance(3);
-        this.worldBorder.setDamageAmount(0);
 
         // Starting remoteness detection (for ALL players)
         this.remotenessTask = KTPMain.getInstance().getServer().getScheduler().runTaskTimer(KTPMain.getInstance(), new Runnable() {
@@ -93,6 +87,19 @@ public class KTP2017Game extends Game<KTPPlayer> {
     public static enum GamePhase {
 
         WAIT, AREA_STARTED, GAME_PHASE1, GAME_PHASE2, GAME_DONE;
+
+    }
+
+    private void setupArea(KTPArea area){
+
+        // Setting-up WorldBorder
+        this.worldBorder.setSize(32);
+        this.worldBorder.setCenter(area.getAreaLocation());
+        this.worldBorder.setWarningDistance(3);
+        this.worldBorder.setDamageAmount(0);
+
+        // Update the current played Area
+        this.currentlyPlayedArea = area;
 
     }
 
