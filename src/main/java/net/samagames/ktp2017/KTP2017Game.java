@@ -1,6 +1,7 @@
 package net.samagames.ktp2017;
 
 import net.samagames.api.games.Game;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -49,7 +50,14 @@ public class KTP2017Game extends Game<KTPPlayer> {
     @Override
     public void handleLogin(Player player){
 
-        player.teleport(this.getCurrentlyPlayedArea().getAreaLocation());
+        if(this.getCurrentGamePhase() == GamePhase.WAIT || this.getCurrentGamePhase() == GamePhase.AREA_STARTED){
+
+            this.getCurrentlyPlayedArea().getAreaPlayers().add(player.getUniqueId());
+            player.teleport(this.getCurrentlyPlayedArea().getAreaLocation());
+
+        } else {
+            player.setGameMode(GameMode.SPECTATOR);
+        }
 
     }
 
@@ -74,6 +82,8 @@ public class KTP2017Game extends Game<KTPPlayer> {
         return this.currentlyPlayedArea;
     }
 
-    public KTPArea getNextPlayableArea(){ return this.nextPlayableArea; }
+    public KTPArea getNextPlayableArea(){
+        return this.nextPlayableArea;
+    }
 
 }
