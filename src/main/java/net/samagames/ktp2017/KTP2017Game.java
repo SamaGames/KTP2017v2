@@ -37,8 +37,9 @@ public class KTP2017Game extends Game<KTPPlayer> {
     public static KTPArea area1 = new KTPArea(1);
     public static KTPArea area2 = new KTPArea(2);
 
-    public KTP2017Game(KTPMain instance, String gameCodeName, String gameName, String gameDescription, Class<KTPPlayer> gamePlayer) {
-        super(gameCodeName, gameName, gameDescription, gamePlayer);
+    public KTP2017Game() {
+
+        super("KTP2017", "KTP2017²", "Awersome !", KTPPlayer.class);
 
         // Initializing all the things
         this.avaibleAreas = new ArrayList<>();

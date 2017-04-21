@@ -22,7 +22,7 @@ public class KTPMain extends JavaPlugin {
         instance = this;
 
         // Registering game on SamaGamesAPI
-        this.game = new KTP2017Game(this, "code", "KTP2017Game", "description", KTPPlayer.class);
+        this.game = new KTP2017Game();
         SamaGamesAPI.get().getGameManager().setFreeMode(true);
         SamaGamesAPI.get().getGameManager().registerGame(this.game);
 
