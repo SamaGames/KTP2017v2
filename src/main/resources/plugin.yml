@@ -1,5 +1,5 @@
-main: net.samagames.ktp2017.KTPMain
 name: KTP2017
-version: 1.0
-author: Vialonyx
+main: net.samagames.ktp2017.KTPMain
+version: 1.0.0-SNAPSHOT
 depend: [SamaGamesAPI]
+authors: [Vialonyx]
