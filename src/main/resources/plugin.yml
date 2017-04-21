@@ -1,5 +1,5 @@
-main: net.samagames.KTP2017Game.KTPMain
-name: KTP2017Game
+main: net.samagames.ktp2017.KTPMain
+name: KTP2017
 version: 1.0
 author: Vialonyx
 depend: [SamaGamesAPI]

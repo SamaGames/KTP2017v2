@@ -1,4 +1,4 @@
-package net.samagames.KTP2017;
+package net.samagames.ktp2017;
 
 import net.samagames.api.games.GamePlayer;
 import org.bukkit.entity.Player;

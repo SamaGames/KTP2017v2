@@ -1,4 +1,4 @@
-package net.samagames.KTP2017;
+package net.samagames.ktp2017;
 
 import com.google.gson.JsonObject;
 import net.samagames.api.SamaGamesAPI;
@@ -7,13 +7,13 @@ import org.bukkit.Location;
 import java.util.TreeSet;
 import java.util.UUID;
 
-public class Area {
+public class KTPArea {
 
     private int areaId;
     private Location areaLocation;
     private TreeSet<UUID> inArea;
 
-    public Area(int id){
+    public KTPArea(int id){
 
         this.areaId = id;
         this.inArea = new TreeSet<UUID>();
