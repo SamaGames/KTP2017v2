@@ -2,14 +2,14 @@ package net.samagames.ktp2017;
 
 import net.samagames.api.games.Game;
 import org.bukkit.GameMode;
+import org.bukkit.WorldBorder;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-
-import static org.bukkit.Bukkit.broadcastMessage;
 import static org.bukkit.Bukkit.getOnlinePlayers;
+import static org.bukkit.Bukkit.getWorlds;
 
 public class KTP2017Game extends Game<KTPPlayer> {
 
@@ -20,6 +20,8 @@ public class KTP2017Game extends Game<KTPPlayer> {
 
     private GamePhase current;
     private BukkitTask remotenessTask;
+    private WorldBorder worldBorder;
+
     private List<KTPArea> avaibleAreas;
     private KTPArea currentlyPlayedArea;
     private KTPArea nextPlayableArea;
@@ -32,6 +34,7 @@ public class KTP2017Game extends Game<KTPPlayer> {
 
         // Initializing all the things
         this.avaibleAreas = new ArrayList<>();
+        this.worldBorder = getWorlds().get(0).getWorldBorder();
 
         // Registering areas
         this.avaibleAreas.add(KTP2017Game.area1);
@@ -45,6 +48,12 @@ public class KTP2017Game extends Game<KTPPlayer> {
 
         // Set the next playable Area (Generated automatically and randomly in the future!)
         this.nextPlayableArea = KTP2017Game.area2;
+
+        // Setting-up WorldBorder
+        this.worldBorder.setSize(32);
+        this.worldBorder.setCenter(this.getCurrentlyPlayedArea().getAreaLocation());
+        this.worldBorder.setWarningDistance(3);
+        this.worldBorder.setDamageAmount(0);
 
         // Starting remoteness detection (for ALL players)
         this.remotenessTask = KTPMain.getInstance().getServer().getScheduler().runTaskTimer(KTPMain.getInstance(), new Runnable() {
