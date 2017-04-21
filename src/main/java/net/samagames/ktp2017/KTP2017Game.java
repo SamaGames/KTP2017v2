@@ -3,10 +3,13 @@ package net.samagames.ktp2017;
 import net.samagames.api.games.Game;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
-
+import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+
+import static org.bukkit.Bukkit.broadcastMessage;
+import static org.bukkit.Bukkit.getOnlinePlayers;
 
 public class KTP2017Game extends Game<KTPPlayer> {
 
@@ -16,6 +19,7 @@ public class KTP2017Game extends Game<KTPPlayer> {
      */
 
     private GamePhase current;
+    private BukkitTask remotenessTask;
     private List<KTPArea> avaibleAreas;
     private KTPArea currentlyPlayedArea;
     private KTPArea nextPlayableArea;
@@ -41,6 +45,22 @@ public class KTP2017Game extends Game<KTPPlayer> {
 
         // Set the next playable Area (Generated automatically and randomly in the future!)
         this.nextPlayableArea = KTP2017Game.area2;
+
+        // Starting remoteness detection (for ALL players)
+        this.remotenessTask = KTPMain.getInstance().getServer().getScheduler().runTaskTimer(KTPMain.getInstance(), new Runnable() {
+
+            @Override
+            public void run() {
+
+                for(Player p : getOnlinePlayers()){
+                    if(p.getLocation().distance(getCurrentlyPlayedArea().getCheckableEntity().getLocation()) >= 20){
+                        p.teleport(getCurrentlyPlayedArea().getAreaLocation().clone().add(0.5, 10.00D, 0.5));
+                    }
+                }
+
+            }
+
+        }, 0L, 100L);
 
         // Debugging game variables during developement phase
         logDebug();
