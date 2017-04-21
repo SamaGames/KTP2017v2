@@ -36,6 +36,8 @@ public class KTP2017Game extends Game<KTPPlayer> {
 
     public static KTPArea area1 = new KTPArea(1);
     public static KTPArea area2 = new KTPArea(2);
+    public static KTPArea area3 = new KTPArea(3);
+    public static KTPArea area4 = new KTPArea(4);
 
     public KTP2017Game() {
 
@@ -48,6 +50,10 @@ public class KTP2017Game extends Game<KTPPlayer> {
         // Registering areas
         this.avaibleAreas.add(KTP2017Game.area1);
         this.avaibleAreas.add(KTP2017Game.area2);
+        this.avaibleAreas.add(KTP2017Game.area3);
+        this.avaibleAreas.add(KTP2017Game.area4);
+
+
 
         // Setting current phase to WAIT
         this.current = GamePhase.WAIT;
