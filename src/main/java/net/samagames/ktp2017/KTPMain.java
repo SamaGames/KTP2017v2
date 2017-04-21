@@ -2,6 +2,7 @@ package net.samagames.ktp2017;
 
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.ktp2017.listeners.KTPProtectionListener;
+import net.samagames.ktp2017.listeners.PlayerListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import static org.bukkit.Bukkit.getWorlds;
 
@@ -31,6 +32,7 @@ public class KTPMain extends JavaPlugin {
 
         // Registering event listeners.
         getServer().getPluginManager().registerEvents(new KTPProtectionListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 
     }
 

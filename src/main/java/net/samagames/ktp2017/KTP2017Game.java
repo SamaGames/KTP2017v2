@@ -1,10 +1,16 @@
 package net.samagames.ktp2017;
 
+import net.minecraft.server.v1_10_R1.*;
+import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Game;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
+import org.bukkit.*;
 import org.bukkit.WorldBorder;
+import org.bukkit.craftbukkit.v1_10_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_10_R1.entity.CraftFirework;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,9 +83,18 @@ public class KTP2017Game extends Game<KTPPlayer> {
 
         if(this.getCurrentGamePhase() == GamePhase.WAIT || this.getCurrentGamePhase() == GamePhase.AREA_STARTED){
             preparePlayer(player.getUniqueId());
+
+            // -- TEMPORARY FOR DEVELOPEMENT PERIOD --
+            if(this.getCurrentlyPlayedArea().getAreaPlayers().size() >= 2){
+                SamaGamesAPI.get().getGameManager().getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.GREEN + "--- C'est parti ! ---", true);
+                this.current = GamePhase.GAME_PHASE2;
+            }
+
         } else {
             player.setGameMode(GameMode.SPECTATOR);
         }
+
+        logDebug();
 
     }
 
@@ -110,11 +125,49 @@ public class KTP2017Game extends Game<KTPPlayer> {
         Bukkit.getPlayer(playerUUID).teleport(this.getCurrentlyPlayedArea().getAreaLocation());
     }
 
+    public void eliminatePlayer(UUID playerUUID){
+        this.getCurrentlyPlayedArea().getAreaPlayers().remove(playerUUID);
+        this.setSpectator(Bukkit.getPlayer(playerUUID));
+        Bukkit.getPlayer(playerUUID).setGameMode(GameMode.SPECTATOR);
+        this.checkWinDetection();
+    }
+
+    public void checkWinDetection(){
+        if(this.getCurrentlyPlayedArea().getAreaPlayers().size() == 1){
+
+            Player winner = Bukkit.getPlayer(this.getCurrentlyPlayedArea().getAreaPlayers().first());
+            FireworkEffect fwWinner_one = FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(Color.GREEN).withFade(Color.SILVER).withFlicker().build();
+            FireworkEffect fwWinner_two = FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(Color.WHITE).withFade(Color.YELLOW).withFlicker().build();
+
+            this.current = GamePhase.GAME_DONE;
+            SamaGamesAPI.get().getGameManager().getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.RED + winner.getDisplayName() + ChatColor.AQUA + " a gagné la partie !", true);
+            this.launchfw(winner.getLocation(), fwWinner_one);
+            this.launchfw(winner.getLocation(), fwWinner_two);
+
+        }
+    }
+
     public void logDebug(){
         KTPMain.getInstance().getLogger().log(Level.INFO,"------- DEBUG -------");
         KTPMain.getInstance().getLogger().log(Level.INFO,"Current game phase : " + getCurrentGamePhase());
-        KTPMain.getInstance().getLogger().log(Level.INFO,this.avaibleAreas.size() + " areas registered. " + avaibleAreas.toArray());
+        KTPMain.getInstance().getLogger().log(Level.INFO,this.avaibleAreas.size() + " areas registered. " + avaibleAreas.toString());
         KTPMain.getInstance().getLogger().log(Level.INFO,"-------- END --------");
+    }
+
+    private void launchfw(Location location, final FireworkEffect effect) {
+        Firework fw = (Firework) location.getWorld().spawnEntity(location, EntityType.FIREWORK);
+        FireworkMeta fwm = fw.getFireworkMeta();
+        fwm.addEffect(effect);
+        fwm.setPower(0);
+        fw.setFireworkMeta(fwm);
+        ((CraftFirework) fw).getHandle().setInvisible(true);
+
+        KTPMain.getInstance().getServer().getScheduler().runTaskLater(KTPMain.getInstance(), () -> {
+            net.minecraft.server.v1_10_R1.World world = (((CraftWorld) location.getWorld()).getHandle());
+            EntityFireworks fireworks = ((CraftFirework) fw).getHandle();
+            world.broadcastEntityEffect(fireworks, (byte) 17);
+            fireworks.die();
+        }, 1);
     }
 
     public GamePhase getCurrentGamePhase(){
