@@ -1,12 +1,14 @@
 package net.samagames.ktp2017;
 
 import net.samagames.api.games.Game;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.WorldBorder;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import static org.bukkit.Bukkit.getOnlinePlayers;
 import static org.bukkit.Bukkit.getWorlds;
@@ -74,10 +76,7 @@ public class KTP2017Game extends Game<KTPPlayer> {
     public void handleLogin(Player player){
 
         if(this.getCurrentGamePhase() == GamePhase.WAIT || this.getCurrentGamePhase() == GamePhase.AREA_STARTED){
-
-            this.getCurrentlyPlayedArea().getAreaPlayers().add(player.getUniqueId());
-            player.teleport(this.getCurrentlyPlayedArea().getAreaLocation());
-
+            preparePlayer(player.getUniqueId());
         } else {
             player.setGameMode(GameMode.SPECTATOR);
         }
@@ -101,6 +100,14 @@ public class KTP2017Game extends Game<KTPPlayer> {
         // Update the current played Area
         this.currentlyPlayedArea = area;
 
+    }
+
+    private void preparePlayer(UUID playerUUID){
+        Bukkit.getPlayer(playerUUID).setGameMode(GameMode.SURVIVAL);
+        Bukkit.getPlayer(playerUUID).setHealth(0.1);
+        Bukkit.getPlayer(playerUUID).setHealthScale(0.1);
+        this.getCurrentlyPlayedArea().getAreaPlayers().add(playerUUID);
+        Bukkit.getPlayer(playerUUID).teleport(this.getCurrentlyPlayedArea().getAreaLocation());
     }
 
     public void logDebug(){
