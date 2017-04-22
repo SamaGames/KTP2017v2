@@ -14,6 +14,7 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 import java.util.logging.Level;
 import static org.bukkit.Bukkit.getOnlinePlayers;
@@ -27,12 +28,12 @@ public class KTP2017Game extends Game<KTPPlayer> {
      */
 
     private GamePhase current;
-    private BukkitTask remotenessTask;
     private WorldBorder worldBorder;
-
     private List<KTPArea> avaibleAreas;
     private KTPArea currentlyPlayedArea;
     private KTPArea nextPlayableArea;
+    BukkitTask remotenessTask;
+    Random random;
 
     public static KTPArea area1 = new KTPArea(1);
     public static KTPArea area2 = new KTPArea(2);
@@ -45,7 +46,11 @@ public class KTP2017Game extends Game<KTPPlayer> {
 
         // Initializing all the things
         this.avaibleAreas = new ArrayList<>();
+        this.random = new Random();
         this.worldBorder = getWorlds().get(0).getWorldBorder();
+        this.worldBorder.setSize(32);
+        this.worldBorder.setWarningDistance(3);
+        this.worldBorder.setDamageAmount(0);
 
         // Registering areas
         this.avaibleAreas.add(KTP2017Game.area1);
@@ -53,16 +58,11 @@ public class KTP2017Game extends Game<KTPPlayer> {
         this.avaibleAreas.add(KTP2017Game.area3);
         this.avaibleAreas.add(KTP2017Game.area4);
 
-
-
         // Setting current phase to WAIT
         this.current = GamePhase.WAIT;
 
-        // Setting-up default Area
-        this.setupArea(area1);
-
-        // Set the next playable Area (Generated automatically and randomly in the future!)
-        this.nextPlayableArea = KTP2017Game.area2;
+        this.setupArea(getRandomlyArea());
+        this.nextPlayableArea = getRandomlyArea();
 
         // Starting remoteness detection (for ALL players)
         this.remotenessTask = KTPMain.getInstance().getServer().getScheduler().runTaskTimer(KTPMain.getInstance(), new Runnable() {
@@ -114,13 +114,12 @@ public class KTP2017Game extends Game<KTPPlayer> {
     private void setupArea(KTPArea area){
 
         // Setting-up WorldBorder
-        this.worldBorder.setSize(32);
         this.worldBorder.setCenter(area.getAreaLocation());
-        this.worldBorder.setWarningDistance(3);
-        this.worldBorder.setDamageAmount(0);
 
         // Update the current played Area
         this.currentlyPlayedArea = area;
+
+        KTPMain.getInstance().getLogger().log(Level.INFO, "Area " + area.getAreaId() + " sucessfully installed.");
 
     }
 
@@ -156,8 +155,10 @@ public class KTP2017Game extends Game<KTPPlayer> {
 
     public void logDebug(){
         KTPMain.getInstance().getLogger().log(Level.INFO,"------- DEBUG -------");
-        KTPMain.getInstance().getLogger().log(Level.INFO,"Current game phase : " + getCurrentGamePhase());
-        KTPMain.getInstance().getLogger().log(Level.INFO,this.avaibleAreas.size() + " areas registered. " + avaibleAreas.toString());
+        KTPMain.getInstance().getLogger().log(Level.INFO,"Current game phase : " + this.getCurrentGamePhase());
+        KTPMain.getInstance().getLogger().log(Level.INFO,this.avaibleAreas.size() + " areas registered. " + this.avaibleAreas.toString());
+        KTPMain.getInstance().getLogger().log(Level.INFO,"Current area : " + this.getCurrentlyPlayedArea());
+        KTPMain.getInstance().getLogger().log(Level.INFO,"Next area : " + this.nextPlayableArea);
         KTPMain.getInstance().getLogger().log(Level.INFO,"-------- END --------");
     }
 
@@ -179,6 +180,28 @@ public class KTP2017Game extends Game<KTPPlayer> {
 
     public GamePhase getCurrentGamePhase(){
         return this.current;
+    }
+
+    public KTPArea getRandomlyArea(){
+
+        KTPArea suggest = this.avaibleAreas.get(this.random.nextInt(this.avaibleAreas.size()));
+        if(this.getCurrentlyPlayedArea() == null){
+
+            return this.avaibleAreas.get(0);
+
+        } else if (suggest.getAreaId() == this.getCurrentlyPlayedArea().getAreaId()){
+
+            // It's so bad - ugly, i know. I'll try to get back to it later.
+            if(this.getCurrentlyPlayedArea().getAreaId()+1 >= this.avaibleAreas.size()){
+                return this.avaibleAreas.get(this.getCurrentlyPlayedArea().getAreaId()-2);
+            } else if (this.getCurrentlyPlayedArea().getAreaId()+1 < this.avaibleAreas.size()){
+                return this.avaibleAreas.get(this.getCurrentlyPlayedArea().getAreaId()+1);
+            }
+
+        }
+
+        return suggest;
+
     }
 
     public KTPArea getCurrentlyPlayedArea(){
