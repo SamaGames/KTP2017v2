@@ -1,4 +1,4 @@
-package net.samagames.ktp2017.listeners;
+package net.samagames.ktp2017;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

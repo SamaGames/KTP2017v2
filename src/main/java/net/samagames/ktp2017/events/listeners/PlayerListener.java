@@ -1,4 +1,4 @@
-package net.samagames.ktp2017.listeners;
+package net.samagames.ktp2017;
 
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.ktp2017.KTP2017Game;
