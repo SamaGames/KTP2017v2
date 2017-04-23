@@ -17,7 +17,7 @@ public class PlayerListener implements Listener {
 
         event.setCancelled(true);
 
-        if (KTPMain.getInstance().getGame().getCurrentGamePhase() == KTP2017Game.GamePhase.GAME_PHASE2) {
+        if (KTPMain.getInstance().getGame().getCurrentGamePhase() == KTP2017Game.GamePhase.GAME_COMBAT) {
 
             if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
 

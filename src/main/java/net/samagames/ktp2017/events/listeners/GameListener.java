@@ -55,8 +55,13 @@ public class GameListener implements Listener {
     public void onAreaJoin(AreaJoinEvent event){
 
         if(this.game.getCurrentlyPlayedArea().getAreaPlayers().size() >= KTPMain.getInstance().getPlayerAmountToStart()){
-            SamaGamesAPI.get().getGameManager().getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.GREEN + "C'est parti !", true);
-            this.game.updateGamePhase(KTP2017Game.GamePhase.GAME_PHASE2);
+
+            if(this.game.getCurrentGamePhase() != KTP2017Game.GamePhase.GAME_COMBAT){
+                SamaGamesAPI.get().getGameManager().getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.GREEN + "C'est parti !", true);
+                this.game.updateGamePhase(KTP2017Game.GamePhase.GAME_COMBAT);
+                this.game.logDebug();
+            }
+
         }
 
     }

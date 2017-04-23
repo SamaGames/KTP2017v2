@@ -5,15 +5,14 @@ import net.samagames.ktp2017.events.listeners.GameListener;
 import net.samagames.ktp2017.events.listeners.KTPProtectionListener;
 import net.samagames.ktp2017.events.listeners.PlayerListener;
 import org.bukkit.plugin.java.JavaPlugin;
-import java.util.logging.Level;
 import static org.bukkit.Bukkit.getWorlds;
-
-public class KTPMain extends JavaPlugin {
 
     /**
      *  This is the entry point of the KTP2017Game Game.
      *  @author Vialonyx
      */
+
+public class KTPMain extends JavaPlugin {
 
     private static KTPMain instance;
     private KTP2017Game game;
@@ -36,8 +35,6 @@ public class KTPMain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new KTPProtectionListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         getServer().getPluginManager().registerEvents(new GameListener(this.getGame()), this);
-
-        getLogger().log(Level.INFO, "Players need to start : " + getPlayerAmountToStart());
 
     }
 

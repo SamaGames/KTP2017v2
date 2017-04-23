@@ -84,15 +84,16 @@ public class KTP2017Game extends Game<KTPPlayer> {
             preparePlayer(player);
         } else {
             this.setSpectator(player);
+            player.setGameMode(GameMode.SPECTATOR);
         }
 
         logDebug();
 
     }
 
-    public static enum GamePhase {
+    public enum GamePhase {
 
-        WAIT, AREA_STARTED, GAME_PHASE1, GAME_PHASE2, GAME_DONE;
+        WAIT, AREA_STARTED, GAME_COMBAT, GAME_DONE
 
     }
 
@@ -104,11 +105,16 @@ public class KTP2017Game extends Game<KTPPlayer> {
         // Update the current played Area
         this.currentlyPlayedArea = area;
 
+        // Update the Game Phase
+        this.updateGamePhase(GamePhase.AREA_STARTED);
+
         KTPMain.getInstance().getLogger().log(Level.INFO, "Area " + area.getAreaId() + " sucessfully installed.");
 
     }
 
     public void preparePlayer(Player player){
+
+        KTPMain.getInstance().getLogger().log(Level.INFO, "PREPARING PLAYER " + player);
 
         if(this.getSpectatorPlayers().containsKey(this.getPlayer(player.getUniqueId()))){
             this.getSpectatorPlayers().remove(this.getPlayer(player.getUniqueId()));
