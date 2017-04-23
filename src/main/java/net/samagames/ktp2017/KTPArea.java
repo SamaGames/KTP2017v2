@@ -2,6 +2,7 @@ package net.samagames.ktp2017;
 
 import com.google.gson.JsonObject;
 import net.samagames.api.SamaGamesAPI;
+import net.samagames.ktp2017.events.AreaJoinEvent;
 import net.samagames.tools.LocationUtils;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -30,6 +31,15 @@ public class KTPArea {
         this.checkableEntity.setVisible(false);
         this.checkableEntity.setGravity(false);
 
+    }
+
+    public void joinArea(UUID player){
+        this.inArea.add(player);
+        KTPMain.getInstance().getServer().getPluginManager().callEvent(new AreaJoinEvent(player, this));
+    }
+
+    public void leaveArea(UUID player){
+        this.inArea.remove(player);
     }
 
     public int getAreaId(){
