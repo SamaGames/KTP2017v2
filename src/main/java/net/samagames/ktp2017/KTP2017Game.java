@@ -123,6 +123,7 @@ public class KTP2017Game extends Game<KTPPlayer> {
     }
 
     public void eliminatePlayer(Player player){
+        player.setVelocity(player.getLocation().getDirection().multiply(-0.5));
         this.getCurrentlyPlayedArea().leaveArea(player.getUniqueId());
         player.setGameMode(GameMode.SPECTATOR);
         this.setSpectator(player);
