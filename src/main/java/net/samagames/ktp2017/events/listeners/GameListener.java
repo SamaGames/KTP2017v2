@@ -54,8 +54,7 @@ public class GameListener implements Listener {
     @EventHandler
     public void onAreaJoin(AreaJoinEvent event){
 
-        // Note: Value 2 is used during the developement period to facilitate testing
-        if(this.game.getCurrentlyPlayedArea().getAreaPlayers().size() >= 2){
+        if(this.game.getCurrentlyPlayedArea().getAreaPlayers().size() >= KTPMain.getInstance().getPlayerAmountToStart()){
             SamaGamesAPI.get().getGameManager().getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.GREEN + "C'est parti !", true);
             this.game.updateGamePhase(KTP2017Game.GamePhase.GAME_PHASE2);
         }
