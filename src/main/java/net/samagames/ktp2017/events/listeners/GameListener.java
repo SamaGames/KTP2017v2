@@ -6,6 +6,8 @@ import net.samagames.ktp2017.KTPMain;
 import net.samagames.ktp2017.Utils;
 import net.samagames.ktp2017.events.AreaJoinEvent;
 import net.samagames.ktp2017.events.GameEndEvent;
+import net.samagames.tools.Titles;
+import net.samagames.tools.chat.ActionBarAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,6 +27,7 @@ public class GameListener implements Listener {
         this.game.updateGamePhase(KTP2017Game.GamePhase.GAME_DONE);
         this.game.getCurrentlyPlayedArea().getAreaPlayers().clear();
         this.game.setupArea(this.game.getRandomlyArea());
+        SamaGamesAPI.get().getGameManager().getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Début de la prochaine map dans " + ChatColor.RED + "5" + ChatColor.YELLOW + " secondes !", true);
 
         new BukkitRunnable(){
 
@@ -43,7 +46,7 @@ public class GameListener implements Listener {
 
                 }
 
-                SamaGamesAPI.get().getGameManager().getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Début de la prochaine map dans " + ChatColor.RED + seconds + ChatColor.YELLOW + " " + Utils.formatSeconds(seconds), true);
+                getOnlinePlayers().forEach(player -> ActionBarAPI.sendMessage(player, "" + ChatColor.BLUE + ChatColor.BOLD + "Prochaine map dans " + ChatColor.GOLD + seconds + ChatColor.BLUE + ChatColor.BOLD + " " + Utils.formatSeconds(seconds)));
 
             }
 

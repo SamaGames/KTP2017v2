@@ -3,14 +3,18 @@ package net.samagames.ktp2017;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Game;
 import net.samagames.ktp2017.events.GameEndEvent;
+import net.samagames.tools.Titles;
 import org.bukkit.*;
 import org.bukkit.WorldBorder;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
+
+import static org.bukkit.Bukkit.getOnlinePlayers;
 import static org.bukkit.Bukkit.getWorlds;
 
     /**
@@ -129,6 +133,7 @@ public class KTP2017Game extends Game<KTPPlayer> {
     }
 
     public void eliminatePlayer(Player player){
+        Titles.sendTitle(player, 20, 60, 20, ChatColor.RED + "WASTED", "");
         player.setVelocity(player.getLocation().getDirection().multiply(-0.5));
         this.getCurrentlyPlayedArea().leaveArea(player.getUniqueId());
         player.setGameMode(GameMode.SPECTATOR);
@@ -140,13 +145,37 @@ public class KTP2017Game extends Game<KTPPlayer> {
         if(this.getCurrentlyPlayedArea().getAreaPlayers().size() == 1){
 
             Player winner = Bukkit.getPlayer(this.getCurrentlyPlayedArea().getAreaPlayers().first());
-            FireworkEffect fwWinner_one = FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(Color.GREEN).withFade(Color.SILVER).withFlicker().build();
-            FireworkEffect fwWinner_two = FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(Color.WHITE).withFade(Color.YELLOW).withFlicker().build();
-            SamaGamesAPI.get().getGameManager().getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.RED + winner.getDisplayName() + ChatColor.AQUA + " a gagné la partie !", true);
-            Utils.launchfw(winner.getLocation(), fwWinner_one);
-            Utils.launchfw(winner.getLocation(), fwWinner_two);
 
-            KTPMain.getInstance().getServer().getPluginManager().callEvent(new GameEndEvent(winner.getUniqueId()));
+            FireworkEffect fwWinner_one = FireworkEffect.builder().with(FireworkEffect.Type.BURST).withColor(Color.RED).withFade(Color.SILVER).withFlicker().build();
+            FireworkEffect fwWinner_two = FireworkEffect.builder().with(FireworkEffect.Type.BURST).withColor(Color.YELLOW).withFade(Color.AQUA).withFlicker().build();
+            FireworkEffect fwWinner_three = FireworkEffect.builder().with(FireworkEffect.Type.BURST).withColor(Color.BLUE).withFade(Color.ORANGE).withFlicker().build();
+
+            SamaGamesAPI.get().getGameManager().getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.AQUA + "Victoire de " + ChatColor.RED + ChatColor.BOLD + winner.getDisplayName() + " !", true);
+
+            getOnlinePlayers().forEach(player -> Titles.sendTitle(player, 20, 100, 20, ChatColor.RED + winner.getDisplayName(), "" + ChatColor.YELLOW + ChatColor.BOLD + "a gagné la partie !"));
+            getOnlinePlayers().forEach(player -> player.playSound(player.getLocation(), Sound.ENTITY_WITHER_SPAWN, 20, 20));
+
+            new BukkitRunnable(){
+
+                int seconds = 0;
+
+                @Override
+                public void run(){
+
+                    seconds++;
+                    if(seconds == 6){
+                        KTPMain.getInstance().getServer().getPluginManager().callEvent(new GameEndEvent(winner.getUniqueId()));
+                        this.cancel();
+                        return;
+                    }
+
+                    Utils.launchfw(winner.getLocation(), fwWinner_one);
+                    Utils.launchfw(winner.getLocation(), fwWinner_two);
+                    Utils.launchfw(winner.getLocation(), fwWinner_three);
+
+                }
+
+            }.runTaskTimer(KTPMain.getInstance(), 0L, 20L);
 
         }
     }
