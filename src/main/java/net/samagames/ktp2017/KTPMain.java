@@ -47,7 +47,7 @@ public class KTPMain extends JavaPlugin {
     }
 
     public int getPlayerAmountToStart(){
-        return SamaGamesAPI.get().getGameManager().getGameProperties().getOptions().get("playersToStart").getAsInt();
+        return SamaGamesAPI.get().getGameManager().getGameProperties().getGameOptions().get("playersToStart").getAsInt();
     }
 
 }
