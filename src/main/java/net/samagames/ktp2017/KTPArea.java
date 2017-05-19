@@ -23,7 +23,7 @@ public class KTPArea {
 
         this.areaId = id;
         this.inArea = new TreeSet<UUID>();
-        JsonObject configuration = SamaGamesAPI.get().getGameManager().getGameProperties().getGameOptions();
+        JsonObject configuration = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs();
         World areaWorld = getWorld(configuration.get("world-name").getAsString());
         this.areaLocation = LocationUtils.str2loc(areaWorld.getName() + ", " + configuration.get("area_" + this.areaId).getAsString());
 
