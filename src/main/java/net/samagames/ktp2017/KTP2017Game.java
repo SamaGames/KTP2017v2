@@ -95,6 +95,15 @@ public class KTP2017Game extends Game<KTPPlayer> {
 
     }
 
+    @Override
+    public void handleLogout(Player player){
+
+        if(this.getCurrentlyPlayedArea().getAreaPlayers().contains(player.getUniqueId())){
+            KTPMain.getInstance().getGame().eliminatePlayer(player);
+        }
+
+    }
+
     public enum GamePhase {
 
         WAIT, AREA_STARTED, GAME_COMBAT, GAME_DONE
