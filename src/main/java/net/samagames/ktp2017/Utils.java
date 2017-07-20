@@ -11,6 +11,12 @@ import org.bukkit.inventory.meta.FireworkMeta;
 
 public class Utils {
 
+    /**
+     * Lunch firework.
+     * @param location The location.
+     * @param effect The firework's effect.
+     */
+
     public static void launchfw(Location location, final FireworkEffect effect) {
         Firework fw = (Firework) location.getWorld().spawnEntity(location, EntityType.FIREWORK);
         FireworkMeta fwm = fw.getFireworkMeta();
@@ -26,6 +32,12 @@ public class Utils {
             fireworks.die();
         }, 1);
     }
+
+    /**
+     * Singular or plural?
+     * @param seconds Amount
+     * @return Correct string.
+     */
 
     public static String formatSeconds(int seconds){
         if(seconds > 1){

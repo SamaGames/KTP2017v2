@@ -8,7 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import static org.bukkit.Bukkit.getWorlds;
 
     /**
-     *  This is the entry point of the KTP2017Game Game.
+     *  This is the entry point of the KTP2017 Game.
      *  @author Vialonyx
      */
 
@@ -38,13 +38,28 @@ public class KTPMain extends JavaPlugin {
 
     }
 
+        /**
+         * Get an instance of KTP2017 plugin.
+         * @return an instance of KTP2017 plugin.
+         */
+
     public static KTPMain getInstance(){
         return instance;
     }
 
+        /**
+         * Get an instance of the KTP2017 game.
+         * @return an instance of KTP2017 game.
+         */
+
     public KTP2017Game getGame(){
         return this.game;
     }
+
+        /**
+         * Get from config the amount of players which is necessary to start the game.
+         * @return the amount.
+         */
 
     public int getPlayerAmountToStart(){
         return SamaGamesAPI.get().getGameManager().getGameProperties().getOptions().get("playersToStart").getAsInt();

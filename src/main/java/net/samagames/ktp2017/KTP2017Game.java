@@ -31,6 +31,7 @@ public class KTP2017Game extends Game<KTPPlayer> {
     BukkitTask remotenessTask;
     Random random;
 
+    // Creating KTP arenas
     public static KTPArea area1 = new KTPArea(1);
     public static KTPArea area2 = new KTPArea(2);
     public static KTPArea area3 = new KTPArea(3);
@@ -38,7 +39,7 @@ public class KTP2017Game extends Game<KTPPlayer> {
 
     public KTP2017Game() {
 
-        super("KTP2017", "KTP2017²", "Awersome !", KTPPlayer.class);
+        super("ktp2017", "KTP2017²", "Awersome !", KTPPlayer.class);
 
         // Initializing all the things
         this.avaibleAreas = new ArrayList<>();
@@ -81,6 +82,11 @@ public class KTP2017Game extends Game<KTPPlayer> {
 
     }
 
+        /**
+         * handleLogin : Called by SamaGamesAPI on player connexion.
+         * @param player The player.
+         */
+
     @Override
     public void handleLogin(Player player){
 
@@ -94,6 +100,11 @@ public class KTP2017Game extends Game<KTPPlayer> {
         logDebug();
 
     }
+
+        /**
+         * handleLogin : Called by SamaGamesAPI on player quit.
+         * @param player The player.
+         */
 
     @Override
     public void handleLogout(Player player){
@@ -110,6 +121,11 @@ public class KTP2017Game extends Game<KTPPlayer> {
 
     }
 
+        /**
+         * setupArea : Prepare area to be played.
+         * @param area The arena.
+         */
+
     public void setupArea(KTPArea area){
 
         // Setting-up WorldBorder
@@ -124,6 +140,11 @@ public class KTP2017Game extends Game<KTPPlayer> {
         KTPMain.getInstance().getLogger().log(Level.INFO, "Area " + area.getAreaId() + " sucessfully installed.");
 
     }
+
+        /**
+         * preparePlayer : Prepare player to play.
+         * @param area The player.
+         */
 
     public void preparePlayer(Player player){
 
@@ -140,6 +161,11 @@ public class KTP2017Game extends Game<KTPPlayer> {
         player.teleport(this.getCurrentlyPlayedArea().getAreaLocation());
 
     }
+
+        /**
+         * eliminatePlayer : Called when a player died.
+         * @param area The player.
+         */
 
     public void eliminatePlayer(Player player){
         Titles.sendTitle(player, 20, 60, 20, ChatColor.RED + "WASTED", "");
@@ -205,6 +231,11 @@ public class KTP2017Game extends Game<KTPPlayer> {
         return this.current;
     }
 
+        /**
+         * Get randomly the next area.
+         * @return The next area (randomly selected and cannot be same than the previous)
+         */
+
     public KTPArea getRandomlyArea(){
 
         KTPArea suggest = this.avaibleAreas.get(this.random.nextInt(this.avaibleAreas.size()));
@@ -226,6 +257,11 @@ public class KTP2017Game extends Game<KTPPlayer> {
         return suggest;
 
     }
+
+        /**
+         * Get the current played area.
+         * @return The area.
+         */
 
     public KTPArea getCurrentlyPlayedArea(){
         return this.currentlyPlayedArea;
