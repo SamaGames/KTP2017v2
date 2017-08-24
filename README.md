@@ -13,7 +13,7 @@ Pour plus de détails, référez-vous au texte de licence disponible [ici](LICEN
 - Type : Mini-Jeu
 - État : Terminé
 - Développeur(s) : zyuiop (à l'origine), Vialonyx
-- CDC (Si existant) : [KTP2017²](https://end.samagames.net/ressources/ktp2017-2.pdf)
+- CDC (Si existant) : [KTP2017²](https://samagames.net/ressources/ktp2017-2.pdf)
 
 
 ## Description
